@@ -69,6 +69,10 @@ var server=http.createServer(function(req, resp) {
             resp.write('<input type="submit" name="submit" value="Submit"/>\n');
             resp.end('</form>\n\nYou will be redirected to provide the authorization for this client for the above resources.</body>\n');
         }
+        else if (pathname == '/favicon.ico') {
+            resp.writeHead(200, {'Content-Type': 'image/x-icon'});
+            resp.end();
+        }
         else if (req.url.indexOf('?') >= 0 &&
                  req.url.indexOf('code=') >=0) {
 
