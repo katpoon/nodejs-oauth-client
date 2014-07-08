@@ -12,14 +12,24 @@ const https = require('https');
 const url = require('url');
 const crypto = require('crypto');
 const querystring = require('querystring');
+const os = require('os');
+
+var localipv4addr = '';
+
+var ifaces=os.networkInterfaces();
+for (var dev in ifaces) {
+   var alias = 0;
+   ifaces[dev].forEach(function(details) {
+       if (details.family=='IPv4' && dev == 'eth0') {
+            localipv4addr = details.address;
+       }
+   });
+}
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-var localipaddr = '';
+var localipaddr = localipv4addr;
 const localport = 8880;
-
-// oauth client ip address
-const localip = '172.16.196.1';
 
 // datapower oauth az endpoint 
 const oauthip = '172.16.196.8:8000';
@@ -46,7 +56,7 @@ const oauth_token_ep = 'https://' + oauthip + '/token';
 const resource_ep = 'https://' + oauthrs;
 var my_redirect = 'http://' + localip + ':' + localport + '/redirect';
 
-console.log('\nclient_id: ' + client_id + '\nclient_secert: ' + client_secret);
+console.log('node --harmony [client_id] [client_secert].\nThis instance: client_id: ' + client_id + '  client_secert: ' + client_secret);
 
 var server=http.createServer(function(req, resp) {
 
